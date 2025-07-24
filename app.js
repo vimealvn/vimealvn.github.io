@@ -175,7 +175,7 @@ const restaurants = [
     deliveryTime: "25 phút",
     discount: "Giảm 14.000₫",
     discountCondition: "Đơn hàng từ 40.000₫",
-    image: "https://pplx-res.cloudinary.com/image/upload/v1750003656/pplx_project_search_images/1ad55fdbca32a8ee37d07cf8ef1402aa41e93ba2.jpg",
+    image: "https://media.discordapp.net/attachments/948752044372676629/1397918283856085002/top-dia-chi-com-ga-xoi-mo-quan-10-lam-nuc-long-thuc-khach-13-min.png?ex=6883785a&is=688226da&hm=40adf7656ab2e71b6bf23f07ac1e33cece8acfcffef27cdf67fdebea76b25735&=&format=webp&quality=lossless",
     menuItems: [
       {
         name: "Cơm Tấm",
