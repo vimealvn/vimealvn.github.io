@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ViMeal - Giao đồ ăn nhanh</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="location">
+                    <span class="location-icon">📍</span>
+                    <span class="location-text">Đại Học Kinh Tế TP.HCM</span>
+                </div>
+
+                <div class="search-container">
+                    <input
+                        type="text"
+                        id="searchInput"
+                        class="search-input"
+                        placeholder="Tìm kiếm món ăn, nhà hàng..."
+                    />
+                    <button class="search-btn">🔍</button>
+                </div>
+
+                <div class="user-area">
+                    <a href="#" class="brand" id="brandLink">
+                        <img src="logo.png" alt="ViMeal Logo" class="brand-logo" style="width: 80px; height: auto;">
+                    </a>
+                    <button class="cart-btn" id="cartBtn">
+                        🛒 <span class="cart-count" id="cartCount">0</span>
+                    </button>
+                    <div class="auth-section" id="authSection">
+                        <button class="user-icon-btn" id="userIconBtn">⚙️</button>
+                        <div class="user-dropdown hidden" id="userDropdown">
+                            <button class="logout-btn" id="logoutBtn">Đăng xuất</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Categories Navigation -->
+    <nav class="categories-nav">
+        <div class="container">
+            <div class="categories-list" id="categoriesList"></div>
+        </div>
+    </nav>
+
+    <!-- Ad Banner -->
+    <section id="adBanner" class="ad-banner"></section>
+
+    <!-- Promotional Banners -->
+    <section class="promotions">
+        <div class="container">
+            <div class="promotion-banners">
+                <div class="promotion-banner promo-primary">
+                    <img src="https://pplx-res.cloudinary.com/image/upload/v1753346369/pplx_project_search_images/b55979db6e6b9f533156affca9ed639f8c19eebe.jpg" alt="Nem Nướng" class="banner-image" />
+                    <div class="banner-content">
+                        <h3>Brand đỉnh deal đậm</h3>
+                        <p>Giảm đến 50%</p>
+                    </div>
+                </div>
+                <div class="promotion-banner promo-secondary">
+                    <img src="https://pplx-res.cloudinary.com/image/upload/v1753346388/pplx_project_search_images/b1c646c601e3629e88de85fb5d41c08dbb896647.jpg" alt="Popeyes" class="banner-image" />
+                    <div class="banner-content">
+                        <h3>Vùng deal siêu đậm</h3>
+                        <p>Săn deal ngay</p>
+                    </div>
+                </div>
+                <div class="promotion-banner promo-special">
+                    <img src="https://pplx-res.cloudinary.com/image/upload/v1753346386/pplx_project_search_images/b39f928a58d2be2d0fab9edcb8725e429ef4bd7a.jpg" alt="Fried Chicken" class="banner-image" />
+                    <div class="banner-content">
+                        <h3>Ưu đãi chớp nhoáng!</h3>
+                        <p>Ưu đãi giờ vàng, đặt ngay kẻo lỡ!</p>
+                    </div>
+                </div>
+                <div class="promotion-banner promo-lunch">
+                    <img src="https://pplx-res.cloudinary.com/image/upload/v1753341910/pplx_project_search_images/a61ec9b29613105bbda5c3e0c9d594dabbf8ec14.jpg" alt="Vietnamese Coffee" class="banner-image" />
+                    <div class="banner-content">
+                        <h3>Bữa trưa tươi vui</h3>
+                        <p>Giảm đến 55K</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Flash Sale Section -->
+    <section class="flash-sale" id="flashSale">
+        <div class="container">
+            <h2>⚡ Ưu đãi chớp nhoáng</h2>
+            <div class="flash-sale-grid" id="flashSaleGrid"></div>
+        </div>
+    </section>
+
+    <!-- Restaurant Listings -->
+    <main class="main-content" id="nearbyRestaurants">
+        <div class="container">
+            <div class="restaurants-section">
+                <h2>Nhà hàng gần bạn</h2>
+                <div class="restaurants-grid" id="restaurantsGrid"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Authentication Modal -->
+    <div class="modal hidden" id="authModal">
+        <div class="modal-overlay" id="authModalOverlay"></div>
+        <div class="modal-content auth-modal">
+            <div class="modal-header">
+                <h2>Đăng nhập / Đăng ký</h2>
+                <button class="modal-close" id="authModalClose">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="auth-tabs">
+                    <button class="auth-tab active" data-tab="login">Đăng nhập</button>
+                    <button class="auth-tab" data-tab="signup">Đăng ký</button>
+                </div>
+
+                <!-- Login Form -->
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" id="loginEmail" class="form-control" required />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Mật khẩu</label>
+                        <input type="password" id="loginPassword" class="form-control" required />
+                    </div>
+                    <div class="auth-error hidden" id="loginError"></div>
+                    <button type="submit" class="btn btn--primary btn--full-width">Đăng nhập</button>
+                </form>
+
+                <!-- Signup Form -->
+                <form id="signupForm" class="auth-form hidden">
+                    <div class="form-group">
+                        <label class="form-label">Họ và tên</label>
+                        <input type="text" id="signupFullName" class="form-control" required />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" id="signupEmail" class="form-control" required />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Mật khẩu</label>
+                        <input type="password" id="signupPassword" class="form-control" minlength="6" required />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Xác nhận mật khẩu</label>
+                        <input type="password" id="signupConfirmPassword" class="form-control" minlength="6" required />
+                    </div>
+                    <div class="auth-error hidden" id="signupError"></div>
+                    <button type="submit" class="btn btn--primary btn--full-width">Đăng ký</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Restaurant Detail Modal -->
+    <div class="modal hidden" id="restaurantModal">
+        <div class="modal-overlay" id="modalOverlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalRestaurantName"></h2>
+                <button class="modal-close" id="modalClose">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="restaurant-info">
+                    <div class="restaurant-rating">
+                        <span class="rating" id="modalRating"></span>
+                        <span class="review-count" id="modalReviewCount"></span>
+                    </div>
+                    <div class="delivery-info">
+                        <span class="delivery-fee" id="modalDeliveryFee"></span>
+                        <span class="delivery-time" id="modalDeliveryTime"></span>
+                    </div>
+                </div>
+                <div class="menu-items" id="menuItems"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Modal -->
+    <div class="modal hidden" id="cartModal">
+        <div class="modal-overlay" id="cartModalOverlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Giỏ hàng</h2>
+                <button class="modal-close" id="cartModalClose">✕</button>
+            </div>
+            <div class="modal-body">
+                <div id="cartItems" class="cart-items"></div>
+                
+                <!-- Delivery Options -->
+                <div class="delivery-options">
+                    <h3>Chọn hình thức nhận đơn:</h3>
+                    <div class="delivery-radio-group">
+                        <label class="delivery-option">
+                            <input type="radio" name="deliveryType" value="delivery" checked />
+                            <span class="radio-custom"></span>
+                            <span class="option-text">
+                                <span class="option-icon">🚚</span>
+                                <span class="option-label">Giao hàng tận nơi</span>
+                            </span>
+                        </label>
+                        <label class="delivery-option">
+                            <input type="radio" name="deliveryType" value="takeaway" />
+                            <span class="radio-custom"></span>
+                            <span class="option-text">
+                                <span class="option-icon">🏃</span>
+                                <span class="option-label">Đến lấy</span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="cart-summary">
+                    <div class="cart-subtotal">
+                        <span>Tạm tính:</span>
+                        <span id="cartSubtotal">0₫</span>
+                    </div>
+                    <div class="cart-delivery-fee">
+                        <span>Phí giao hàng:</span>
+                        <span id="cartDeliveryFee">15.000₫</span>
+                    </div>
+                    <div class="cart-total">
+                        <strong>Tổng cộng: <span id="cartTotal">0₫</span></strong>
+                    </div>
+                </div>
+                
+                <button class="btn btn--primary btn--full-width" id="proceedToOrder">Thanh Toán</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Form Modal -->
+    <div class="modal hidden" id="orderModal">
+        <div class="modal-overlay" id="orderModalOverlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Thông tin đặt hàng</h2>
+                <button class="modal-close" id="orderModalClose">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="orderForm" class="order-form">
+                    <div class="form-group">
+                        <label class="form-label">Tên khách hàng</label>
+                        <input type="text" id="customerName" class="form-control" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Số điện thoại</label>
+                        <input type="tel" id="customerPhone" class="form-control" required />
+                    </div>
+
+                    <!-- Address field (shown only for delivery) -->
+                    <div class="form-group" id="addressGroup">
+                        <label class="form-label">Địa chỉ giao hàng</label>
+                        <textarea id="deliveryAddress" class="form-control" rows="3" required></textarea>
+                    </div>
+
+                    <!-- Pickup time field (shown only for takeaway) -->
+                    <div class="form-group hidden" id="pickupTimeGroup">
+                        <label class="form-label">Thời gian đến lấy</label>
+                        <select id="pickupTime" class="form-control">
+                            <option value="15">15 phút</option>
+                            <option value="30">30 phút</option>
+                            <option value="45">45 phút</option>
+                            <option value="60">1 giờ</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Ghi chú đặc biệt</label>
+                        <textarea id="specialInstructions" class="form-control" rows="2" placeholder="Ví dụ: Không cay, không hành..."></textarea>
+                    </div>
+
+                    <div class="order-summary">
+                        <h3>Đơn hàng của bạn</h3>
+                        <div id="orderItems" class="order-items"></div>
+                        <div class="order-pricing">
+                            <div class="order-subtotal">
+                                <span>Tạm tính:</span>
+                                <span id="orderSubtotal">0₫</span>
+                            </div>
+                            <div class="order-delivery-fee">
+                                <span id="orderDeliveryLabel">Phí giao hàng:</span>
+                                <span id="orderDeliveryFee">15.000₫</span>
+                            </div>
+                            <div class="order-total">
+                                <strong>Tổng cộng: <span id="orderTotal">0₫</span></strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn--primary btn--full-width">Xác nhận đặt hàng</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast hidden" id="toast">
+        <span id="toastMessage"></span>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
