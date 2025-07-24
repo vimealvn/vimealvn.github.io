@@ -819,10 +819,53 @@ select.form-control {
   color: var(--color-primary);
   text-decoration: none;
   transition: color var(--duration-fast) var(--ease-standard);
+  position: relative;
 }
 
 .brand:hover {
   color: var(--color-primary-hover);
+}
+
+/* Logo switching based on color scheme */
+.brand-logo {
+  transition: opacity var(--duration-fast) var(--ease-standard);
+}
+
+/* Light mode: show light logo, hide dark logo */
+.brand-logo-light {
+  display: block;
+}
+
+.brand-logo-dark {
+  display: none;
+}
+
+/* Dark mode: hide light logo, show dark logo */
+@media (prefers-color-scheme: dark) {
+  .brand-logo-light {
+    display: none;
+  }
+  
+  .brand-logo-dark {
+    display: block;
+  }
+}
+
+/* Manual theme switching support */
+[data-color-scheme="light"] .brand-logo-light {
+  display: block;
+}
+
+[data-color-scheme="light"] .brand-logo-dark {
+  display: none;
+}
+
+[data-color-scheme="dark"] .brand-logo-light {
+  display: none;
+}
+
+[data-color-scheme="dark"] .brand-logo-dark {
+  display: block;
 }
 
 /* Header styles */
