@@ -1094,7 +1094,8 @@ select.form-control {
 
 /* Ad Banner */
 .ad-banner {
-  background: var(--color-teal-700);
+  background: linear-gradient(135deg, #882597, #6b299f, #a4238d, #bf2381);
+  color: var(--color-white);
   padding: var(--space-24) 0;
 }
 
