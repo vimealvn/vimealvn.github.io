@@ -1173,7 +1173,7 @@ select.form-control {
 
 .banner-content {
   padding: var(--space-16);
-  background-color: var(--color-teal-700);
+  background-color: var(--color-bg-5);
 }
 
 .promo-primary {
