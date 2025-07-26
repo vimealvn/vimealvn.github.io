@@ -727,28 +727,59 @@ function renderFlashSale(list) {
 function renderAdBanner() {
   const banner = document.getElementById("adBanner");
   let currentImg = 0;
-  
-  banner.innerHTML = `
-    <div class="ad-banner-row">
-      <div class="ad-card">
-        <img src="${adImages[currentImg]}" alt="Ad" class="ad-img" />
+  let intervalId;
+
+  // Function to update the banner display
+  function updateBanner() {
+    banner.innerHTML = `
+      <div class="ad-banner-row">
+        <div class="ad-card">
+          <img src="${adImages[currentImg]}" alt="Ad" class="ad-img" />
+        </div>
+        <div class="ad-dots">
+          ${adImages.map((_, index) => 
+            `<span class="ad-dot ${index === currentImg ? 'active' : ''}" data-index="${index}"></span>`
+          ).join('')}
+        </div>
       </div>
-      <div class="ad-dots">
-        ${adImages.map((_, index) => 
-          `<span class="ad-dot ${index === currentImg ? 'active' : ''}" data-index="${index}"></span>`
-        ).join('')}
-      </div>
-    </div>
-  `;
-  
-  document.querySelectorAll('.ad-dot').forEach(dot => {
-    dot.addEventListener('click', () => {
-      currentImg = parseInt(dot.dataset.index);
-      document.querySelectorAll('.ad-dot').forEach((d, i) => {
-        d.classList.toggle('active', i === currentImg);
+    `;
+
+    // Add click handlers for dots
+    const dots = banner.querySelectorAll('.ad-dot');
+    dots.forEach(dot => {
+      dot.addEventListener('click', () => {
+        currentImg = parseInt(dot.dataset.index);
+        updateBanner();
+        restartInterval(); // Restart the auto-cycle
       });
-      banner.querySelector('.ad-img').src = adImages[currentImg];
     });
+  }
+
+  // Function to go to next image
+  function nextImage() {
+    currentImg = (currentImg + 1) % adImages.length;
+    updateBanner();
+  }
+
+  // Function to start/restart the interval
+  function restartInterval() {
+    clearInterval(intervalId);
+    intervalId = setInterval(nextImage, 3000); // Change every 3 seconds
+  }
+
+  // Initial render
+  updateBanner();
+  
+  // Start auto-cycling
+  restartInterval();
+
+  // Optional: Pause on hover, resume when not hovering
+  banner.addEventListener('mouseenter', () => {
+    clearInterval(intervalId);
+  });
+
+  banner.addEventListener('mouseleave', () => {
+    restartInterval();
   });
 }
 // ==========================
