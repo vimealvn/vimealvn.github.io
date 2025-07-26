@@ -1140,26 +1140,68 @@ select.form-control {
   background: linear-gradient(135deg, #882597, #6b299f, #a4238d, #bf2381);
   color: var(--color-white);
   padding: var(--space-24) 0;
+  position: relative;
 }
 
 .ad-banner-row {
   display: flex;
-  gap: 16px; /* or any spacing you like */
+  gap: 16px;
   justify-content: center;
 }
+
 .ad-card {
   flex: 1 1 0;
-  max-width: 220px; /* or whatever size suits your layout */
+  max-width: 70%; /* Change back to 100% for full width */
+  width: 100%; /* Ensure full width */
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   background: #fff;
+  margin: 0; /* Remove any margin */
+  position: relative;
 }
+
 .ad-img {
   width: 100%;
   height: auto;
   display: block;
+  max-height: none;
+  object-fit: cover; /* Change back to cover for full coverage */
+  border-radius: 12px; /* Match the card border radius */
 }
+
+.ad-dots {
+  position: absolute;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  z-index: 10;
+}
+
+.ad-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.ad-dot:hover {
+  background: rgba(255, 255, 255, 0.8);
+  transform: scale(1.2);
+}
+
+.ad-dot.active {
+  background: var(--color-white);
+  border-color: var(--color-primary);
+  transform: scale(1.3);
+}
+
 
 .highlighted-text {
   font-weight: bold;
@@ -1925,14 +1967,31 @@ select.form-control {
     top: 120px;
   }
 
+  .ad-banner {
+    padding: var(--space-16) 0; /* Reduce padding */
+  }
+
+  .ad-banner-row {
+    gap: 0; /* Remove gap on mobile */
+    padding: 0; /* Ensure no padding */
+    margin: 0; /* Ensure no margin */
+  }
+
   .ad-card {
-    flex-direction: column;
+    max-width: 100%; /* Full width on mobile */
+    width: 100%;
+    margin: 0;
+    border-radius: 0; /* Remove border radius on mobile for full coverage */
   }
 
   .ad-img {
-    max-width: 100%;
-    height: 200px;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 0; /* Remove border radius for full edge-to-edge coverage */
+    max-height: 200px; /* Set reasonable height for mobile */
   }
+
 
   .delivery-radio-group {
     gap: var(--space-8);

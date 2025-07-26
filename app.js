@@ -6,7 +6,8 @@
 
 const adImages = [
   "https://sasin.vn:8002//Resource/Image/AB/AB00013/Image/Banner.webp",
-  "https://channel.mediacdn.vn/thumb_w/640/428462621602512896/2023/6/5/photo-1-1685959941422689576220.jpg"
+  "https://sasin.vn:8002//Resource/Image/AB/AB00066/Image/Banner.webp",
+  "https://sasin.vn:8002//Resource/Image/AB/AB00003/Image/Banner.webp"
 ];
 const restaurants = [
   {
@@ -645,15 +646,30 @@ function renderFlashSale(list) {
 
 function renderAdBanner() {
   const banner = document.getElementById("adBanner");
+  let currentImg = 0;
+  
   banner.innerHTML = `
     <div class="ad-banner-row">
-      ${adImages.map(url => `
-        <div class="ad-card">
-          <img src="${url}" alt="Ad" class="ad-img" />
-        </div>
-      `).join("")}
+      <div class="ad-card">
+        <img src="${adImages[currentImg]}" alt="Ad" class="ad-img" />
+      </div>
+      <div class="ad-dots">
+        ${adImages.map((_, index) => 
+          `<span class="ad-dot ${index === currentImg ? 'active' : ''}" data-index="${index}"></span>`
+        ).join('')}
+      </div>
     </div>
   `;
+  
+  document.querySelectorAll('.ad-dot').forEach(dot => {
+    dot.addEventListener('click', () => {
+      currentImg = parseInt(dot.dataset.index);
+      document.querySelectorAll('.ad-dot').forEach((d, i) => {
+        d.classList.toggle('active', i === currentImg);
+      });
+      banner.querySelector('.ad-img').src = adImages[currentImg];
+    });
+  });
 }
 // ==========================
 // Filtering Logic
