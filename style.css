@@ -1142,33 +1142,28 @@ select.form-control {
   padding: var(--space-24) 0;
 }
 
-.ad-card {
+.ad-banner-row {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-20);
-  background: var(--color-surface);
-  border: 1px solid var(--color-card-border);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: var(--shadow-lg);
-  transition: transform var(--duration-fast) var(--ease-standard);
+  gap: 16px; /* or any spacing you like */
+  justify-content: center;
 }
-
-.ad-card:hover {
-  transform: translateY(-2px);
+.ad-card {
+  flex: 1 1 0;
+  max-width: 220px; /* or whatever size suits your layout */
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  background: #fff;
+}
+.ad-img {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 .highlighted-text {
   font-weight: bold;
   color: #e53935; /* Choose your preferred color */
-}
-
-.ad-img {
-  width: 100%;
-  max-width: 320px;
-  height: 180px;
-  object-fit: cover;
-  flex-shrink: 0;
 }
 
 .ad-content {
