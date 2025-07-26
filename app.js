@@ -764,7 +764,7 @@ function renderAdBanner() {
   // Function to start/restart the interval
   function restartInterval() {
     clearInterval(intervalId);
-    intervalId = setInterval(nextImage, 3000); // Change every 3 seconds
+    intervalId = setInterval(nextImage, 2000); // Change every 2seconds
   }
 
   // Initial render
