@@ -747,17 +747,55 @@ function renderAdBanner() {
   const banner = document.getElementById("adBanner");
   let currentImg = 0;
   let intervalId;
+  let isTransitioning = false;
 
-  // Function to update the banner display
-  function updateBanner() {
+  // Function to update the banner display with smooth transition
+  function updateBanner(withTransition = false) {
+    if (isTransitioning && withTransition) return; // Prevent overlapping transitions
+    
+    if (withTransition) {
+      isTransitioning = true;
+      // Add fade out effect
+      const currentBanner = banner.querySelector('.ad-banner-row');
+      if (currentBanner) {
+        currentBanner.style.opacity = '0';
+        currentBanner.style.transform = 'translateX(-20px)';
+      }
+      
+      // Wait for fade out, then update content
+      setTimeout(() => {
+        renderBannerContent();
+        // Fade in new content
+        const newBanner = banner.querySelector('.ad-banner-row');
+        if (newBanner) {
+          newBanner.style.opacity = '0';
+          newBanner.style.transform = 'translateX(20px)';
+          // Force reflow
+          newBanner.offsetHeight;
+          newBanner.style.transition = 'opacity 0.5s ease-in-out, transform 0.5s ease-in-out';
+          newBanner.style.opacity = '1';
+          newBanner.style.transform = 'translateX(0)';
+        }
+        
+        setTimeout(() => {
+          isTransitioning = false;
+        }, 500);
+      }, 250);
+    } else {
+      renderBannerContent();
+    }
+  }
+
+  // Function to render banner content
+  function renderBannerContent() {
     banner.innerHTML = `
-      <div class="ad-banner-row">
+      <div class="ad-banner-row" style="transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;">
         <div class="ad-card">
-          <img src="${adImages[currentImg]}" alt="Ad" class="ad-img" />
+          <img src="${adImages[currentImg]}" alt="Ad" class="ad-img" style="transition: opacity 0.3s ease-in-out;" />
         </div>
         <div class="ad-dots">
           ${adImages.map((_, index) => 
-            `<span class="ad-dot ${index === currentImg ? 'active' : ''}" data-index="${index}"></span>`
+            `<span class="ad-dot ${index === currentImg ? 'active' : ''}" data-index="${index}" style="transition: all 0.3s ease-in-out;"></span>`
           ).join('')}
         </div>
       </div>
@@ -767,38 +805,50 @@ function renderAdBanner() {
     const dots = banner.querySelectorAll('.ad-dot');
     dots.forEach(dot => {
       dot.addEventListener('click', () => {
+        if (isTransitioning) return; // Prevent clicks during transition
         currentImg = parseInt(dot.dataset.index);
-        updateBanner();
+        updateBanner(true);
         restartInterval(); // Restart the auto-cycle
       });
     });
   }
 
-  // Function to go to next image
+  // Function to go to next image with smooth transition
   function nextImage() {
     currentImg = (currentImg + 1) % adImages.length;
-    updateBanner();
+    updateBanner(true);
   }
 
   // Function to start/restart the interval
   function restartInterval() {
     clearInterval(intervalId);
-    intervalId = setInterval(nextImage, 2000); // Change every 2seconds
+    intervalId = setInterval(nextImage, 4000); // Change every 4 seconds for smoother experience
   }
 
-  // Initial render
-  updateBanner();
+  // Initial render without transition
+  updateBanner(false);
   
   // Start auto-cycling
   restartInterval();
 
-  // Optional: Pause on hover, resume when not hovering
+  // Pause on hover, resume when not hovering
   banner.addEventListener('mouseenter', () => {
     clearInterval(intervalId);
+    // Add subtle scale effect on hover
+    const adCard = banner.querySelector('.ad-card');
+    if (adCard) {
+      adCard.style.transform = 'scale(1.02)';
+      adCard.style.transition = 'transform 0.3s ease-in-out';
+    }
   });
 
   banner.addEventListener('mouseleave', () => {
     restartInterval();
+    // Remove scale effect
+    const adCard = banner.querySelector('.ad-card');
+    if (adCard) {
+      adCard.style.transform = 'scale(1)';
+    }
   });
 }
 // ==========================
@@ -929,6 +979,24 @@ flashSaleGrid.addEventListener("click", (e) => {
   const item = flashSaleItems.find((it) => it.id === id);
   if (!item) return;
   addToCart(item.restaurantId, item.name, item.restaurantName, item.salePrice);
+});
+
+// ==========================
+// Promotional Banners click handler
+// ==========================
+document.addEventListener("DOMContentLoaded", () => {
+  const promotionBanners = document.querySelectorAll(".promotion-banner");
+  promotionBanners.forEach((banner) => {
+    banner.addEventListener("click", () => {
+      const flashSaleSection = document.getElementById("flashSale");
+      if (flashSaleSection) {
+        flashSaleSection.scrollIntoView({ 
+          behavior: "smooth", 
+          block: "start" 
+        });
+      }
+    });
+  });
 });
 
 // ==========================
