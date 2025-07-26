@@ -3,6 +3,11 @@
 // ==========================
 // Initial Data (Restaurants & Menu) - Updated with proper food images
 // ==========================
+
+const adImages = [
+  "https://sasin.vn:8002//Resource/Image/AB/AB00013/Image/Banner.webp",
+  "https://channel.mediacdn.vn/thumb_w/640/428462621602512896/2023/6/5/photo-1-1685959941422689576220.jpg"
+];
 const restaurants = [
   {
     id: 1,
@@ -641,23 +646,15 @@ function renderFlashSale(list) {
 function renderAdBanner() {
   const banner = document.getElementById("adBanner");
   banner.innerHTML = `
-    <div class="container">
-      <div class="ad-card">
-        <img src="https://pplx-res.cloudinary.com/image/upload/v1753346386/pplx_project_search_images/97adad2c7e2676eb22a4c9fe6fbeb1b3fcae8134.jpg" alt="Domino's Pizza" class="ad-img" />
-        <div class="ad-content">
-          <h2>
-            <span class="highlighted-text">Giảm 50%</span> Pizza Phô Mai Núi Lửa hôm nay!
-          </h2>
-          <button class="btn btn--primary" id="adCtaBtn">Đặt ngay</button>
+    <div class="ad-banner-row">
+      ${adImages.map(url => `
+        <div class="ad-card">
+          <img src="${url}" alt="Ad" class="ad-img" />
         </div>
-      </div>
-    </div>`;
-  document.getElementById("adCtaBtn").addEventListener("click", () => {
-    const dominosCard = document.querySelector('.restaurant-card[data-id="1"]');
-    if (dominosCard) dominosCard.scrollIntoView({ behavior: "smooth", block: "center" });
-  });
+      `).join("")}
+    </div>
+  `;
 }
-
 // ==========================
 // Filtering Logic
 // ==========================
