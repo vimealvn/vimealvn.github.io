@@ -246,8 +246,8 @@ const flashSaleItems = [
     restaurantName: "Quán Ăn Vặt",
     name: "Tokbokki Cay Phô Mai",
     description: "Bánh gạo cay Hàn Quốc với phô mai tan chảy",
-    originalPrice: 70000,
-    salePrice: 35000,
+    originalPrice: 45000,
+    salePrice: 22500,
     image: "https://pplx-res.cloudinary.com/image/upload/v1753346369/pplx_project_search_images/eb08ab3dce1a81696e9e226bb2d4145f71c42b89.jpg",
     endTime: Date.now() + 2 * 3600 * 1000, // 2 hours
     totalStock: 100,
@@ -259,8 +259,8 @@ const flashSaleItems = [
     restaurantName: "Cơm Gà Chik Chik",
     name: "Cơm Gà Nướng",
     description: "Cơm gà nướng BBQ với rau củ tươi ngon",
-    originalPrice: 80000,
-    salePrice: 50000,
+    originalPrice: 60000,
+    salePrice: 37200,
     image: "https://pplx-res.cloudinary.com/image/upload/v1750003656/pplx_project_search_images/1ad55fdbca32a8ee37d07cf8ef1402aa41e93ba2.jpg",
     endTime: Date.now() + 45 * 60 * 1000, // 45 minutes
     totalStock: 80,
@@ -285,8 +285,8 @@ const flashSaleItems = [
     restaurantName: "Nem Nướng D'ran",
     name: "Nem Nướng",
     description: "Nem nướng Đà Lạt thơm ngon với bánh tráng",
-    originalPrice: 90000,
-    salePrice: 60000,
+    originalPrice: 55000,
+    salePrice: 37000,
     image: "https://pplx-res.cloudinary.com/image/upload/v1753346369/pplx_project_search_images/b55979db6e6b9f533156affca9ed639f8c19eebe.jpg",
     endTime: Date.now() + 20 * 60 * 1000, // 20 minutes
     totalStock: 50,
