@@ -300,6 +300,73 @@ const categories = [
 ];
 
 // ==========================
+// Voucher System
+// ==========================
+const availableVouchers = [
+  { code: "VIMEAL10", discount: 10000, minOrder: 50000, description: "Giảm 10.000₫ cho đơn từ 50.000₫" },
+  { code: "VIMEAL20", discount: 20000, minOrder: 100000, description: "Giảm 20.000₫ cho đơn từ 100.000₫" },
+  { code: "WELCOME15", discount: 15000, minOrder: 75000, description: "Giảm 15.000₫ cho đơn từ 75.000₫" },
+  { code: "STUDENT5", discount: 5000, minOrder: 30000, description: "Giảm 5.000₫ cho đơn từ 30.000₫" },
+  { code: "JNSSHIP", discount: 0, minOrder: 0, description: "Miễn phí giao hàng cho đơn hàng bất kỳ", freeship: true },
+];
+
+function validateVoucher(code, subtotal) {
+  const voucher = availableVouchers.find(v => v.code.toLowerCase() === code.toLowerCase());
+  if (!voucher) {
+    return { valid: false, message: "Mã giảm giá không hợp lệ" };
+  }
+  if (subtotal < voucher.minOrder) {
+    return { 
+      valid: false, 
+      message: `Đơn hàng tối thiểu ${formatCurrency(voucher.minOrder)} để sử dụng mã này` 
+    };
+  }
+  return { valid: true, voucher, message: `Áp dụng thành công! ${voucher.description}` };
+}
+
+function renderVoucherShowcase() {
+  const subtotal = calculateCartSubtotal();
+  vouchersList.innerHTML = "";
+  
+  availableVouchers.forEach((voucher) => {
+    const canUse = subtotal >= voucher.minOrder;
+    const isApplied = appliedVoucher && appliedVoucher.code === voucher.code;
+    
+    const voucherCard = document.createElement("div");
+    voucherCard.className = `voucher-card ${!canUse ? 'disabled' : ''} ${isApplied ? 'applied' : ''}`;
+    voucherCard.dataset.code = voucher.code;
+    
+    const discountText = voucher.freeship 
+      ? "Miễn phí ship" 
+      : `-${formatCurrency(voucher.discount)}`;
+    
+    const requirementText = voucher.minOrder > 0 
+      ? `Đơn tối thiểu ${formatCurrency(voucher.minOrder)}`
+      : "Không có điều kiện";
+    
+    voucherCard.innerHTML = `
+      <div class="voucher-header">
+        <span class="voucher-code">${voucher.code}</span>
+        <span class="voucher-discount">${discountText}</span>
+      </div>
+      <div class="voucher-description">${voucher.description}</div>
+      <div class="voucher-requirement">${requirementText}</div>
+      ${isApplied ? '<div class="voucher-applied-badge">Đã áp dụng</div>' : ''}
+    `;
+    
+    // Add click handler to auto-fill voucher code
+    if (canUse && !isApplied && !appliedVoucher) {
+      voucherCard.addEventListener("click", () => {
+        voucherInput.value = voucher.code;
+        voucherInput.focus();
+      });
+    }
+    
+    vouchersList.appendChild(voucherCard);
+  });
+}
+
+// ==========================
 // Helper functions
 // ==========================
 const parseCurrency = (str) => Number(str.replace(/[^0-9]/g, ""));
@@ -336,6 +403,10 @@ let searchQuery = "";
 let cart = [];
 let selectedRestaurant = null;
 let deliveryType = "delivery"; // "delivery" or "takeaway"
+
+// Voucher state
+let appliedVoucher = null;
+let voucherDiscount = 0;
 
 // Auth state
 let users = [];
@@ -377,7 +448,14 @@ const cartModalClose = document.getElementById("cartModalClose");
 const cartItemsContainer = document.getElementById("cartItems");
 const cartSubtotalEl = document.getElementById("cartSubtotal");
 const cartDeliveryFeeEl = document.getElementById("cartDeliveryFee");
+const cartVoucherDiscountEl = document.getElementById("cartVoucherDiscount");
+const cartVoucherAmountEl = document.getElementById("cartVoucherAmount");
 const cartTotalEl = document.getElementById("cartTotal");
+const voucherInput = document.getElementById("voucherInput");
+const applyVoucherBtn = document.getElementById("applyVoucherBtn");
+const voucherMessage = document.getElementById("voucherMessage");
+const vouchersShowcase = document.getElementById("vouchersShowcase");
+const vouchersList = document.getElementById("vouchersList");
 const proceedToOrderBtn = document.getElementById("proceedToOrder");
 const orderModal = document.getElementById("orderModal");
 const orderModalOverlay = document.getElementById("orderModalOverlay");
@@ -386,6 +464,8 @@ const orderForm = document.getElementById("orderForm");
 const orderItemsContainer = document.getElementById("orderItems");
 const orderSubtotalEl = document.getElementById("orderSubtotal");
 const orderDeliveryFeeEl = document.getElementById("orderDeliveryFee");
+const orderVoucherDiscountEl = document.getElementById("orderVoucherDiscount");
+const orderVoucherAmountEl = document.getElementById("orderVoucherAmount");
 const orderDeliveryLabelEl = document.getElementById("orderDeliveryLabel");
 const orderTotalEl = document.getElementById("orderTotal");
 const addressGroup = document.getElementById("addressGroup");
@@ -842,11 +922,16 @@ function calculateCartSubtotal() {
 }
 
 function calculateDeliveryFee() {
+  if (appliedVoucher && appliedVoucher.freeship) {
+    return 0;
+  }
   return deliveryType === "delivery" ? 15000 : 0;
 }
 
 function calculateCartTotal() {
-  return calculateCartSubtotal() + calculateDeliveryFee();
+  const subtotal = calculateCartSubtotal();
+  const deliveryFee = calculateDeliveryFee();
+  return subtotal + deliveryFee - voucherDiscount;
 }
 
 function updateCartUI() {
@@ -879,6 +964,17 @@ function updateCartUI() {
   cartSubtotalEl.textContent = formatCurrency(calculateCartSubtotal());
   cartDeliveryFeeEl.textContent = formatCurrency(calculateDeliveryFee());
   cartTotalEl.textContent = formatCurrency(calculateCartTotal());
+  
+  // Update voucher display
+  if (appliedVoucher && voucherDiscount > 0) {
+    cartVoucherDiscountEl.classList.remove("hidden");
+    cartVoucherAmountEl.textContent = "-" + formatCurrency(voucherDiscount);
+  } else {
+    cartVoucherDiscountEl.classList.add("hidden");
+  }
+  
+  // Update voucher showcase
+  renderVoucherShowcase();
 }
 
 cartItemsContainer.addEventListener("click", (e) => {
@@ -897,6 +993,51 @@ cartItemsContainer.addEventListener("click", (e) => {
     removeFromCart(restaurantId, itemName);
   }
 });
+
+// ==========================
+// Voucher Event Listeners
+// ==========================
+applyVoucherBtn.addEventListener("click", () => {
+  const code = voucherInput.value.trim();
+  if (!code) {
+    voucherMessage.textContent = "Vui lòng nhập mã giảm giá";
+    voucherMessage.className = "voucher-message error";
+    voucherMessage.classList.remove("hidden");
+    return;
+  }
+  
+  const subtotal = calculateCartSubtotal();
+  const validation = validateVoucher(code, subtotal);
+  
+  if (validation.valid) {
+    appliedVoucher = validation.voucher;
+    voucherDiscount = validation.voucher.discount;
+    voucherMessage.textContent = validation.message;
+    voucherMessage.className = "voucher-message success";
+    voucherMessage.classList.remove("hidden");
+    voucherInput.disabled = true;
+    applyVoucherBtn.textContent = "Đã áp dụng";
+    applyVoucherBtn.disabled = true;
+    updateCartUI();
+    renderVoucherShowcase();
+    showToast("Áp dụng mã giảm giá thành công!");
+  } else {
+    voucherMessage.textContent = validation.message;
+    voucherMessage.className = "voucher-message error";
+    voucherMessage.classList.remove("hidden");
+  }
+});
+
+// Reset voucher when cart is emptied
+function resetVoucher() {
+  appliedVoucher = null;
+  voucherDiscount = 0;
+  voucherInput.value = "";
+  voucherInput.disabled = false;
+  applyVoucherBtn.textContent = "Áp dụng";
+  applyVoucherBtn.disabled = false;
+  voucherMessage.classList.add("hidden");
+}
 
 // ==========================
 // Delivery Type Selection
@@ -967,6 +1108,14 @@ function updateOrderUI() {
   orderDeliveryFeeEl.textContent = formatCurrency(calculateDeliveryFee());
   orderTotalEl.textContent = formatCurrency(calculateCartTotal());
   
+  // Update voucher display
+  if (appliedVoucher && voucherDiscount > 0) {
+    orderVoucherDiscountEl.classList.remove("hidden");
+    orderVoucherAmountEl.textContent = "-" + formatCurrency(voucherDiscount);
+  } else {
+    orderVoucherDiscountEl.classList.add("hidden");
+  }
+  
   // Update labels and form fields based on delivery type
   if (deliveryType === "delivery") {
     orderDeliveryLabelEl.textContent = "Phí giao hàng:";
@@ -985,11 +1134,19 @@ function updateOrderUI() {
 
 orderForm.addEventListener("submit", (e) => {
   e.preventDefault();
+  
+  // Check if cart is empty
+  if (cart.length === 0) {
+    showToast("Không thể đặt hàng khi giỏ hàng trống!");
+    return;
+  }
+  
   const orderNumber = Math.floor(Math.random() * 1000000);
   const deliveryTypeText = deliveryType === "delivery" ? "giao hàng" : "đến lấy";
   showToast(`Đặt hàng thành công! Mã đơn hàng: #${orderNumber}. Hình thức: ${deliveryTypeText}`);
   orderModal.classList.add("hidden");
   cart = [];
+  resetVoucher();
   updateCartUI();
   orderForm.reset();
   
