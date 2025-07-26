@@ -1157,7 +1157,7 @@ select.form-control {
 }
 .ad-img {
   width: auto;
-  height: auto;
+  height: 100%;
   display: block;
 }
 
