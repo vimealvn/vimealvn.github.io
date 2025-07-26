@@ -36,7 +36,7 @@
                         🛒 <span class="cart-count" id="cartCount">0</span>
                     </button>
                     <div class="auth-section" id="authSection">
-                        <button class="user-icon-btn" id="userIconBtn">⚙️</button>
+                        <button class="user-icon-btn" id="userIconBtn">👤</button>
                         <div class="user-dropdown hidden" id="userDropdown">
                             <button class="logout-btn" id="logoutBtn">Đăng xuất</button>
                         </div>
@@ -221,6 +221,24 @@
                     </div>
                 </div>
 
+                <!-- Voucher Section -->
+                <div class="voucher-section">
+                    <h3>Mã giảm giá:</h3>
+                    <div class="voucher-input-group">
+                        <input type="text" id="voucherInput" class="voucher-input" placeholder="Nhập mã giảm giá..." />
+                        <button type="button" id="applyVoucherBtn" class="voucher-btn">Áp dụng</button>
+                    </div>
+                    <div id="voucherMessage" class="voucher-message hidden"></div>
+                </div>
+
+                <!-- Available Vouchers Showcase -->
+                <div class="vouchers-showcase" id="vouchersShowcase">
+                    <h4>Mã giảm giá có sẵn:</h4>
+                    <div class="vouchers-list" id="vouchersList">
+                        <!-- Vouchers will be populated by JavaScript -->
+                    </div>
+                </div>
+
                 <div class="cart-summary">
                     <div class="cart-subtotal">
                         <span>Tạm tính:</span>
@@ -229,6 +247,10 @@
                     <div class="cart-delivery-fee">
                         <span>Phí giao hàng:</span>
                         <span id="cartDeliveryFee">15.000₫</span>
+                    </div>
+                    <div class="cart-voucher-discount hidden" id="cartVoucherDiscount">
+                        <span>Giảm giá:</span>
+                        <span id="cartVoucherAmount">0₫</span>
                     </div>
                     <div class="cart-total">
                         <strong>Tổng cộng: <span id="cartTotal">0₫</span></strong>
@@ -293,6 +315,10 @@
                             <div class="order-delivery-fee">
                                 <span id="orderDeliveryLabel">Phí giao hàng:</span>
                                 <span id="orderDeliveryFee">15.000₫</span>
+                            </div>
+                            <div class="order-voucher-discount hidden" id="orderVoucherDiscount">
+                                <span>Giảm giá:</span>
+                                <span id="orderVoucherAmount">0₫</span>
                             </div>
                             <div class="order-total">
                                 <strong>Tổng cộng: <span id="orderTotal">0₫</span></strong>
