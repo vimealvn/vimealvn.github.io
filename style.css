@@ -1158,6 +1158,11 @@ select.form-control {
   transform: translateY(-2px);
 }
 
+.highlighted-text {
+  font-weight: bold;
+  color: #e53935; /* Choose your preferred color */
+}
+
 .ad-img {
   width: 100%;
   max-width: 320px;
