@@ -84,7 +84,7 @@ const restaurants = [
     deliveryFee: "Miễn phí 10.000₫",
     deliveryTime: "40 phút",
     discount: "50%",
-    image: "https://pplx-res.cloudinary.com/image/upload/v1753346369/pplx_project_search_images/9bc4ecae261ab475d496fde80aec59405b627eae.jpg",
+    image: "https://www.onceuponachef.com/images/2023/08/Beef-Tacos.jpg",
     menuItems: [
       {
         name: "Bánh Tráng Tacos",
