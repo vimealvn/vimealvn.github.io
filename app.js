@@ -645,7 +645,9 @@ function renderAdBanner() {
       <div class="ad-card">
         <img src="https://pplx-res.cloudinary.com/image/upload/v1753346386/pplx_project_search_images/97adad2c7e2676eb22a4c9fe6fbeb1b3fcae8134.jpg" alt="Domino's Pizza" class="ad-img" />
         <div class="ad-content">
-          <h2>Giảm 50% Pizza Phô Mai Núi Lửa hôm nay!</h2>
+          <h2>
+            <span class="highlighted-text">Giảm 50%</span> Pizza Phô Mai Núi Lửa hôm nay!
+          </h2>
           <button class="btn btn--primary" id="adCtaBtn">Đặt ngay</button>
         </div>
       </div>
