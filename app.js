@@ -175,7 +175,7 @@ const restaurants = [
     deliveryTime: "25 phút",
     discount: "Giảm 14.000₫",
     discountCondition: "Đơn hàng từ 40.000₫",
-    image: "https://media.discordapp.net/attachments/948752044372676629/1397918283856085002/top-dia-chi-com-ga-xoi-mo-quan-10-lam-nuc-long-thuc-khach-13-min.png?ex=6883785a&is=688226da&hm=40adf7656ab2e71b6bf23f07ac1e33cece8acfcffef27cdf67fdebea76b25735&=&format=webp&quality=lossless",
+    image: "https://simg.zalopay.com.vn/zlp-website/assets/com_tam_ngon_sai_gon_Com_suon_Ba_Cuong_Com_tam_ngon_Quan_1_c762b29485.jpg",
     menuItems: [
       {
         name: "Cơm Tấm",
