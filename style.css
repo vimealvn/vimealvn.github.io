@@ -1156,7 +1156,7 @@ select.form-control {
   background: #fff;
 }
 .ad-img {
-  width: 100%;
+  width: auto;
   height: auto;
   display: block;
 }
