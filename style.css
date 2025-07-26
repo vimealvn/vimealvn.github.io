@@ -1170,13 +1170,14 @@ select.form-control {
   flex: 1;
   padding: var(--space-20);
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: column;   
+  justify-content: center;  
+  align-items: center;
 }
 
 .ad-content h2 {
   margin: 0 0 var(--space-16) 0;
-  font-size: var(--font-size-2xl);
+  font-size: var(--font-size-3xl);
   color: var(--color-text);
 }
 
